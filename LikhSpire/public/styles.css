@@ -50,7 +50,10 @@ body {
   max-width: 600px;
   opacity: 0.9;
 }
-
+main {
+  min-height: 65dvh;
+  width: 100dvw;
+}
 /* CTA Button */
 .btn-primary {
   background: var(--primary-color) !important;
@@ -98,7 +101,7 @@ textarea::placeholder {
   color: rgba(255, 255, 255, 0.298) !important;
 }
 @media (max-width: 600px) {
-  body {
+  .main {
     padding: 10px 0;
   }
   .hero {
