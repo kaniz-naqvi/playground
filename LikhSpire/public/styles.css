@@ -3,15 +3,23 @@
   --secondary-color: #ffc3a0; /* Peachy */
   --bg-color: #12151a; /* Dark Navy */
   --text-color: #f8f8f8; /* Off White */
-  --font-family: "Poppins", sans-serif;
+  --font-family: "Libre Franklin", serif;
 }
 
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: var(--font-family);
+  font-weight: 300;
 }
-
+h1,
+h2,
+h3,
+strong {
+  font-family: "Antic Didone", serif;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+}
 .navbar {
   background: rgba(18, 21, 26, 0.9) !important;
 }
@@ -99,6 +107,16 @@ footer {
 input::placeholder,
 textarea::placeholder {
   color: rgba(255, 255, 255, 0.298) !important;
+}
+.editors {
+  position: sticky;
+  top: 1%;
+  right: 3%;
+}
+.blog-detail {
+  line-height: 32px;
+  font-weight: 400;
+  font-size: 20px;
 }
 @media (max-width: 600px) {
   .main {

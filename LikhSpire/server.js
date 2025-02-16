@@ -77,10 +77,12 @@ app.get("/api/blogs", (req, res) => {
   });
 });
 //Home
-app.get("/blog", (req, res) => {
+app.get("/blogs-list", (req, res) => {
   res.sendFile(__dirname + "/public/view/blogList.html");
 });
-
+app.get("/blog", (req, res) => {
+  res.sendFile(__dirname + "/public/view/blogDetail.html");
+});
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
