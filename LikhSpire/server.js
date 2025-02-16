@@ -76,13 +76,19 @@ app.get("/api/blogs", (req, res) => {
     }
   });
 });
-//Home
+//Blog List
 app.get("/blogs-list", (req, res) => {
   res.sendFile(__dirname + "/public/view/blogList.html");
 });
 app.get("/blog", (req, res) => {
   res.sendFile(__dirname + "/public/view/blogDetail.html");
 });
+//Delete functionality
+// app.delete("/delete", (req, res) => {
+//   console.log("delete");
+//   res.sendFile(__dirname + "public/view/blogList.html");
+// });
+//Home
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
