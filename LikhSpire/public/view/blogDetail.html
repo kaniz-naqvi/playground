@@ -46,7 +46,7 @@
           ><i class="bi-pen"></i>
         </a>
       </div>
-      <section class="container px-5 blog-detail"></section>
+      <section class="container px-lg-5 blog-detail"></section>
     </main>
     <!-- Footer -->
     <footer class="text-center py-2 border-top">
@@ -72,4 +72,28 @@
       </div>
     </footer>
   </body>
+  <script>
+    const blogDetails = document.querySelector(".blog-detail");
+    window.onload = async function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const blogId = urlParams.get("id");
+      let response = await fetch("/api/blogs");
+      let blogs = await response.json();
+      let currBlog = blogs.find((b) => b.id === Number(blogId));
+      if (currBlog) {
+        showBlog(currBlog);
+      } else {
+        console.log("Blog not found!");
+      }
+    };
+    function showBlog(blog) {
+      let blogHTML = `
+          <h2>${blog.title}</h2>
+          <article>
+            ${blog.content}
+          </article>
+        `;
+      blogDetails.innerHTML = blogHTML;
+    }
+  </script>
 </html>

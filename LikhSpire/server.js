@@ -6,6 +6,7 @@ import fs from "fs";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = 3000;
+const blogFile = __dirname + "/data/blog.json";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,14 +18,13 @@ app.get("/create", (req, res) => {
 });
 
 app.post("/blog", (req, res) => {
-  const blogFile = __dirname + "/data/blog.json";
   const newBlog = {
     id: Date.now(),
     title: req.body.title,
     content: req.body.content,
   };
 
-  console.log("New Blog Received:", newBlog); // Debugging log
+  console.log("New Blog Received:", newBlog);
 
   // Read the JSON file once
   fs.readFile(blogFile, "utf8", (err, data) => {
@@ -84,9 +84,36 @@ app.get("/blog", (req, res) => {
   res.sendFile(__dirname + "/public/view/blogDetail.html");
 });
 //Delete functionality
-// app.delete("/delete", (req, res) => {
-//   console.log("delete");
-//   res.sendFile(__dirname + "public/view/blogList.html");
+app.delete("/api/blogs/:id", (req, res) => {
+  let blog = req.params.id;
+  fs.readFile(blogFile, "utf8", (err, data) => {
+    if (err) return console.log(err);
+    let blogs = JSON.parse(data);
+    let updateBlogList = blogs.filter((b) => b.id != blog);
+    // Write the updated list back to the file
+    fs.writeFile(
+      blogFile,
+      JSON.stringify(updateBlogList, null, 2),
+      (writeErr) => {
+        if (writeErr) {
+          console.error("Error writing file:", writeErr);
+          return res.status(500).json({ error: "Error saving blog data" });
+        }
+      }
+    );
+  });
+  res.status(200).json({ message: "Blog deleted successfully" });
+});
+//Edit
+// app.post("/api/blogs/:id", (req, res) => {
+//   let blog = req.params.id;
+//   console.log(blog);
+//   fs.readFile(blogFile, "utf8", (err, data) => {
+//     if (err) return err;
+//     let blogs= JSON.parse
+//   });
+//   sendFile(__dirname + "/public/view/blogDetails.html");
+//   return res.status(200).json({ message: "Blog deleted successfully" });
 // });
 //Home
 app.get("/", (req, res) => {
