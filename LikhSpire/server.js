@@ -51,7 +51,7 @@ app.post("/blog", (req, res) => {
       )
     ) {
       console.log("Duplicate blog detected, not adding again.");
-      return res.redirect("/blog");
+      return res.redirect(`/blog?id:${newBlog.id}`); //yahan b pass karni hai id
     }
 
     // Push new blog and write back to file
@@ -62,7 +62,7 @@ app.post("/blog", (req, res) => {
         return res.status(500).send("Error saving blog data");
       }
       console.log("Blog saved successfully!");
-      res.redirect("/blog");
+      res.redirect(`/blog?id=${newBlog.id}`); //is point per current id pass karni hai approach batao
     });
   });
 });
