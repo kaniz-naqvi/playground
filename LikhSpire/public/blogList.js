@@ -1,4 +1,5 @@
 const main = document.querySelector(".blog-list");
+
 async function getBlogsData() {
   let response = await fetch("/api/blogs");
   let blogs = await response.json();
@@ -12,8 +13,8 @@ async function getBlogsData() {
          <div data-id=${b.id} data-title="${b.title}" class="flex blogs-item border-top pt-3 mx-lg-5 px-3 px-lg-5">
           <div class="d-flex justify-content-between align-items-center">
             <h4 class="fw-bold py-0">${b.title}</h4>
-            <button  class="btn m-1 delete-btn btn-danger fw-bold"
-              ><i class="bi-trash3"></i>
+            <button class="btn m-1 delete-btn btn-danger fw-bold">
+              <i class="bi-trash3"></i>
             </button>
           </div>
           <p class="pt-0 p">${b.content}</p>
@@ -23,33 +24,49 @@ async function getBlogsData() {
     main.innerHTML = mainHTML;
   }
 }
+
 getBlogsData();
+
+// Event listener for the main container
 main.addEventListener("click", (e) => {
-  if (e.target.closest(".blogs-item")) {
-    const blogId = e.target.closest(".blogs-item").dataset.id;
-    showDetail(blogId);
-  }
-  if (e.target.closest(".delete-btn")) {
-    const parentDiv = e.target
-      .closest(".delete-btn")
-      .parentElement.closest(".blogs-item");
+  // Handle delete button click
+  const deleteBtn = e.target.closest(".delete-btn");
+  if (deleteBtn) {
+    // Stop propagation to prevent triggering the .blogs-item handler
+    e.stopPropagation();
+
+    // Get the parent blog item and extract its ID and title
+    const parentDiv = deleteBtn.closest(".blogs-item");
     const deleteId = parentDiv.dataset.id;
     const deleteName = parentDiv.dataset.title;
-    let conformation = window.confirm(`Do you want to delete "${deleteName}"`);
-    conformation && deleteBlog(deleteId);
+
+    // Confirm deletion with the user
+    let confirmation = window.confirm(`Do you want to delete "${deleteName}"?`);
+    if (confirmation) {
+      deleteBlog(deleteId);
+    }
+    return; // Exit early to avoid running the .blogs-item handler
+  }
+
+  // Handle blog item click (show details)
+  const blogItem = e.target.closest(".blogs-item");
+  if (blogItem) {
+    const blogId = blogItem.dataset.id;
+    showDetail(blogId);
   }
 });
 
 async function deleteBlog(id) {
   let response = await fetch(`/api/blogs/${id}`, {
-    method: "Delete",
+    method: "DELETE",
   });
   if (response.ok) {
-    getBlogsData();
+    getBlogsData(); // Refresh the blog list after deletion
   } else {
     alert("Failed to Delete, try again!");
   }
 }
+
 function showDetail(id) {
   document.location.href = `/blog?id=${id}`;
 }

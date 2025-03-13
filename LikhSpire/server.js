@@ -18,19 +18,14 @@ app.get("/create", (req, res) => {
 });
 
 app.post("/blog", (req, res) => {
-  const newBlog = {
-    id: Date.now(),
-    title: req.body.title,
-    content: req.body.content,
-  };
-
-  console.log("New Blog Received:", newBlog);
+  let { id, title, content } = req.body;
+  console.log("New Blog Received:", req.body);
 
   // Read the JSON file once
   fs.readFile(blogFile, "utf8", (err, data) => {
-    if (err && err.code !== "ENOENT") {
+    if (err) {
       console.error("Error reading file:", err);
-      return res.status(500).send("Error reading blog data");
+      return res.status(500).send(err.message);
     }
 
     let blogs = [];
@@ -43,26 +38,36 @@ app.post("/blog", (req, res) => {
       }
     }
 
-    // Check if blog is already added (Prevent Duplicates)
-    if (
-      blogs.some(
-        (blog) =>
-          blog.title === newBlog.title && blog.content === newBlog.content
-      )
-    ) {
-      console.log("Duplicate blog detected, not adding again.");
-      return res.redirect(`/blog?id:${newBlog.id}`); //yahan b pass karni hai id
+    // Handle Update or Add Logic
+    if (id) {
+      // Update Case: Find the blog with the given id
+      const blogToUpdate = blogs.find((blog) => blog.id === Number(id));
+      if (blogToUpdate) {
+        // Update the blog's title and content
+        blogToUpdate.title = title;
+        blogToUpdate.content = content;
+        console.log("Blog updated successfully!");
+      } else {
+        console.log("Blog with the given ID not found.");
+        return res.status(404).send("Blog not found");
+      }
+    } else {
+      // Add Case: Generate a new ID and add the blog
+      id = Date.now().toString(); // Generate a unique ID
+      const newBlog = { id, title, content };
+      blogs.push(newBlog);
+      console.log("New blog added successfully!");
     }
 
-    // Push new blog and write back to file
-    blogs.push(newBlog);
+    // Write the updated blogs back to the file
     fs.writeFile(blogFile, JSON.stringify(blogs, null, 2), (writeErr) => {
       if (writeErr) {
         console.error("Error writing file:", writeErr);
         return res.status(500).send("Error saving blog data");
       }
-      console.log("Blog saved successfully!");
-      res.redirect(`/blog?id=${newBlog.id}`); //is point per current id pass karni hai approach batao
+
+      // Redirect to the blog page with the correct ID
+      res.redirect(`/blog?id=${id}`);
     });
   });
 });

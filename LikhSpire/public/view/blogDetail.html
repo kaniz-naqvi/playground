@@ -10,7 +10,7 @@
     />
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Libre+Baskerville:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cardo&family=Libre+Baskerville:wght@300;700&display=swap"
       rel="stylesheet"
     />
     <!-- Google Fonts -->
@@ -36,15 +36,18 @@
           ></a
         >
         <a href="/blogs-list" class="btn btn-primary fw-bold"
-          ><i class="bi-pen">Back to List</i>
+          ><i class="bi bi-journal-text"></i> Back to the List
         </a>
       </div>
     </nav>
     <main class="container overflow-x-hidden">
       <div class="d-flex py-1 editors justify-content-end">
-        <a href="/create" class="btn ms-2 btn-success fw-bold"
-          ><i class="bi-pen"></i>
-        </a>
+        <button
+          onclick="editBlog()"
+          class="btn edit-blog ms-2 btn-success fw-bold"
+        >
+          <i class="bi-pen"></i>
+        </button>
       </div>
       <section class="container px-lg-5 blog-detail"></section>
     </main>
@@ -74,12 +77,13 @@
   </body>
   <script>
     const blogDetails = document.querySelector(".blog-detail");
+    let currBlog;
     window.onload = async function () {
       const urlParams = new URLSearchParams(window.location.search);
       const blogId = urlParams.get("id");
       let response = await fetch("/api/blogs");
       let blogs = await response.json();
-      let currBlog = blogs.find((b) => b.id === Number(blogId));
+      currBlog = blogs.find((b) => Number(b.id) === Number(blogId));
       if (currBlog) {
         showBlog(currBlog);
       } else {
@@ -94,6 +98,9 @@
           </article>
         `;
       blogDetails.innerHTML = blogHTML;
+    }
+    function editBlog() {
+      document.location.href = `/create?id=${currBlog.id}`;
     }
   </script>
 </html>
