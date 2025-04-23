@@ -1,18 +1,22 @@
-## JavaScript Assignments
+# Week 01 – Remote Job Preparation (1/36)
 
-You are provided empty JavaScript files (or having function signatures) in this directory. 
-You have to follow the instructions given in each file and write the code in the same file to complete the assignment.
+This folder contains the assignments for Week 01 of my 36-week Remote Job Prep journey.
 
-### Assignments
-Feel free to start doing these in any order you like.
-1. Easy
-2. Medium
-3. Hard
+## Assignments
 
-## Testing
-1. Follow the comment above each problem to run test for that problem
-3. To tests for all the problems of this week run ```npx jest ./tests/```
+### Easy
 
-#### Development Setup
-1. If you have Node.js locally, you should run these on your machine 
-2. If you don't, you can copy these over to repl.it and run it there. Tests wont be automated there so you will have to make use judgement to ensure if your code is correct
+- Anagram Checker — Validates if two strings are anagrams.
+- Expenditure Analysis — Analyzes and summarizes daily spending.
+- Largest Number in Array — Finds the largest number in an array.
+
+### Medium
+
+- Vowel Counter — Counts vowels in a string.
+- Palindrome Validator — Checks if a given string is a palindrome.
+- Execution Time Tracker — Measures the time taken by a function to execute.
+
+### Hard
+
+- Fully Functional Calculator — A calculator with complete arithmetic operations and UI logic.
+- To-Do List App — A basic task management application with add, delete, and mark-as-done features.
